@@ -1,0 +1,49 @@
+- hosts: localhost
+  connection: local
+  collections:
+    - community.docker
+
+  vars_files:
+    - vars/main.yml
+    
+  vars:
+    default_domain_name: 'example.com'
+    db_root_password: 'root_password'
+    
+    ssl_csr_country_name: 'JP'
+    ssl_csr_state_name: 'Osaka'
+    ssl_csr_city_name: 'Example-city'
+    ssl_csr_organization_name: 'Example Inc.'
+    ssl_csr_common_name: '{{ default_domain_name }}'
+
+    # Dockerホスト用ディレクトリ
+    www_document_root: '{{ servezero_path }}/{{ servezero_share_volume }}/public_html' # WWWドキュメントルート
+    
+    # サンプルプログラム用
+    db_host: 'db'
+    sample_db_name: 'my_database'
+    sample_db_user: 'my_user'
+    sample_db_password: 'my_password'
+
+  roles:
+    - geerlingguy.ntp
+        
+  pre_tasks:
+    - selinux: state=disabled
+#      become: True
+    - name: Remove Apache package
+      dnf:
+        name: httpd
+        state: absent
+    - name : Get SSH port
+      shell: echo $(cat /etc/ssh/sshd_config | awk '/^Port/{ print $2 }')
+      register: active_ssh_port
+    - set_fact:
+        ssh_port: "{{ active_ssh_port.stdout | default(ssh_default_port, true) }}"
+
+  tasks:
+    - include_tasks: tasks/app.yml
+    - include_tasks: tasks/base.yml
+
+  handlers:
+    - import_tasks: handlers/main.yml

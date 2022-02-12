@@ -1,0 +1,13 @@
+{{ servezero_path }}/{{ servezero_share_volume }}/log/nginx/*.log {
+        daily
+        rotate 52
+        missingok
+        compress
+        delaycompress
+        notifempty
+        create 640 root root
+        sharedscripts
+        postrotate
+                docker kill --signal="USR1" nginx
+        endscript
+}

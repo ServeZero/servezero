@@ -1,0 +1,60 @@
+##########################################
+# ServeZero Webアプリケーションインストール
+##########################################
+- name: Install web application build environment(Go, Sqlite3, make)
+  dnf:
+    name:
+      - golang
+      - sqlite
+      - make
+      
+- name: Get download url
+  shell: curl -s "https://api.github.com/repos/{{ servezero_app_github_user }}/{{ servezero_app_github_repo }}/tags" | grep "tarball_url" | sed -n '/[ \t]*"tarball_url"/p' | head -n 1 | sed -e 's/[ \t]*".*":[ \t]*"\(.*\)".*/\1/'
+  args:
+    warn: no
+  register: app_archive_url
+
+- name: Download archive
+  unarchive:
+    src: "{{ app_archive_url.stdout }}"
+    dest: "{{ servezero_app_download_path }}"
+    remote_src: yes
+  when: app_archive_url.stdout is defined
+
+- name: Move directory
+  shell: mv "{{ servezero_app_github_user }}-{{ servezero_app_github_repo }}-"* "{{ servezero_app_github_repo }}"
+  args:
+    chdir: "{{ servezero_app_download_path }}"
+  when: app_archive_url.stdout is defined
+
+- name: Clean up directory
+  shell: find ./ -type f -name ".gitkeep" -delete
+  args:
+    chdir: "{{ servezero_app_download_path }}/{{ servezero_app_github_repo }}"
+  when: app_archive_url.stdout is defined
+
+- name: Build application
+  make:
+    chdir: "{{ servezero_app_download_path }}/{{ servezero_app_github_repo }}/app"
+    target: build
+
+- name: Create web application config directory
+  file: path='{{ servezero_config_path }}' state=directory owner=root group=root mode=0755
+- name: Initialize web application db
+  copy: src='{{ servezero_app_download_path }}/{{ servezero_app_github_repo }}/{{ servezero_app_install_db_path }}' dest='{{ servezero_config_path }}/{{ servezero_app_db_name }}' force=no
+
+- name: Make log directory symbolic link
+  file: src='{{ servezero_app_download_path }}/{{ servezero_app_github_repo }}/app/log' dest='/var/log/{{ servezero_system_app_name }}' state=link
+
+- name: Create ServeZero service
+  template:
+    src: '{{ servezero_system_name }}.service.j2'
+    dest: '/lib/systemd/system/{{ servezero_system_name }}.service'
+    mode: '0644'
+  notify: Restart ServeZero
+- name: Start ServeZero service
+  systemd:
+    name: '{{ servezero_system_name }}'
+    daemon_reload: yes
+    enabled: yes
+  notify: Restart ServeZero
