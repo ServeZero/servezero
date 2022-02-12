@@ -50,6 +50,7 @@
   file: path='{{ www_document_root }}' state=directory owner=root group=root mode=0755
 - name: Create virtual host directory
   file: path='{{ servezero_path }}/{{ servezero_share_volume }}/vhost' state=directory owner=root group=root mode=0755
+- file: path='/var/www' state=directory owner=root group=root mode=0755
 - file: src='{{ servezero_path }}/{{ servezero_share_volume }}/vhost' dest='/var/www/vhost' state=link
 
 #
