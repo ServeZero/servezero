@@ -29,8 +29,7 @@
     - geerlingguy.ntp
         
   pre_tasks:
-    - selinux: state=disabled
-#      become: True
+#    - selinux: state=disabled
     - name: Remove Apache package
       dnf:
         name: httpd
