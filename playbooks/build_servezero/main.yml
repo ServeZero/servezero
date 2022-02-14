@@ -30,7 +30,10 @@
         
   pre_tasks:
 #    - selinux: state=disabled
-    - selinux: state=enforcing
+    - name: Enable SELinux
+      selinux:
+        policy: targeted
+        state: enforcing
     - name: Remove Apache package
       dnf:
         name: httpd
