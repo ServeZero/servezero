@@ -39,9 +39,7 @@
   when: app_archive_url.stdout is defined
 
 - name: Make application version file
-  shell: touch "version-{{ app_version.stdout }}"
-  args:
-    chdir: "{{ servezero_app_download_path }}/{{ servezero_app_github_repo }}"
+  file: path="{{ servezero_app_download_path }}/{{ servezero_app_github_repo }}/version-{{ app_version.stdout }}" state=touch
   when: app_version.stdout is defined
 
 - name: Build application
