@@ -39,7 +39,7 @@
   when: app_archive_url.stdout is defined
 
 - name: Make application version file
-  file: path="{{ servezero_app_download_path }}/{{ servezero_app_github_repo }}/version-{{ app_version.stdout }}" state=touch
+  file: path="{{ servezero_app_download_path }}/{{ servezero_app_github_repo }}/version-{{ app_version.stdout }}" state=touch owner=root group=root mode=0644
   when: app_version.stdout is defined
 
 - name: Build application
