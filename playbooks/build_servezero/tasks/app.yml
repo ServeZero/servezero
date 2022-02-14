@@ -14,6 +14,13 @@
     warn: no
   register: app_archive_url
 
+- name: Get version string
+  shell: basename "{{ app_archive_url.stdout }}"
+  register: app_version
+  when: app_archive_url.stdout is defined
+
+- debug: msg="{{ app_version.stdout }}"
+
 - name: Download archive
   unarchive:
     src: "{{ app_archive_url.stdout }}"
