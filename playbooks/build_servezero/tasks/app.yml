@@ -19,8 +19,6 @@
   register: app_version
   when: app_archive_url.stdout is defined
 
-- debug: msg="{{ app_version.stdout }}"
-
 - name: Download archive
   unarchive:
     src: "{{ app_archive_url.stdout }}"
@@ -39,6 +37,12 @@
   args:
     chdir: "{{ servezero_app_download_path }}/{{ servezero_app_github_repo }}"
   when: app_archive_url.stdout is defined
+
+- name: Make application version file
+  shell: touch "version-{{ app_version.stdout }}"
+  args:
+    chdir: "{{ servezero_app_download_path }}/{{ servezero_app_github_repo }}"
+  when: app_version.stdout is defined
 
 - name: Build application
   make:
