@@ -105,16 +105,6 @@
   file: path='{{ servezero_path }}/{{ servezero_share_volume }}/php/php-fpm.d' state=directory owner=root group=root mode=0755
 - name: Create PHP-FPM configuration
   template: src='./container/php/templates/www.conf.j2' dest='{{ servezero_path }}/{{ servezero_share_volume }}/php/php-fpm.d/www.conf' owner=root group=root mode=0644
-#- name: Create sample PHP directory
-#  file: path='{{ www_document_root }}/_sample' state=directory owner=root group=root mode=0755
-
-# - name: Copy sample PHP scripts
-#   template:
-#     src: "./container/php/templates/sample/{{ item }}.j2"
-#     dest: "{{ www_document_root }}/_sample/{{ item }}"
-#   with_items:
-#     - index.php
-#     - index2.php
 
 #
 # ネットワーク作成
@@ -157,8 +147,6 @@
     recreate: yes
     state: started
     restart_policy: always
-#        ports: 3306:3306
-#        exposed_ports: 3306
     networks:
       - name: local-network
     env:
