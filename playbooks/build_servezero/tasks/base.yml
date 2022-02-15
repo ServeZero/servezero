@@ -147,6 +147,7 @@
     name: local/db
     build:
       path: './container/db/build'
+      pull: yes
     source: build
 
 - name: Create MariaDB container
@@ -197,6 +198,7 @@
     name: local/php
     build:
       path: './container/php/build'
+      pull: yes
     source: build
 
 - name: Create php container
@@ -241,6 +243,7 @@
     name: local/nginx
     build:
       path: './container/nginx/build'
+      pull: yes
     source: build
 
 - name: Create nginx container
