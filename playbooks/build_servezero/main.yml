@@ -29,11 +29,11 @@
     - geerlingguy.ntp
         
   pre_tasks:
-#    - selinux: state=disabled
-    - name: Enable SELinux
-      selinux:
-        policy: targeted
-        state: enforcing
+    - selinux: state=disabled
+    # - name: Enable SELinux
+    #   selinux:
+    #     policy: targeted
+    #     state: enforcing
     - name: Remove Apache package
       dnf:
         name: httpd
