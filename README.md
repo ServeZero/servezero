@@ -11,7 +11,11 @@
 ## 運用できるWebアプリケーション
 
 LEMP(Nginx + MariaDb + PHP)型のWebアプリケーションが運用できます。  
-WordPressなどの「スクリプト言語+DB」タイプのCMSの対応が初期目標です。
+
+### 現在インストール可能なWebアプリケーション
+
+- WordPress
+- Joomla!
 
 ## 対象OS
 - CentOS Linux v8
