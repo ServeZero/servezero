@@ -5,3 +5,4 @@ roles:
 collections:
   - community.general
   - community.docker
+  - ansible.posix
