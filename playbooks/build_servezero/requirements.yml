@@ -3,4 +3,5 @@ roles:
   - geerlingguy.ntp
   
 collections:
+  - community.general
   - community.docker

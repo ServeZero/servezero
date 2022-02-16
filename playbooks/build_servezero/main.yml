@@ -1,6 +1,7 @@
 - hosts: localhost
   connection: local
   collections:
+    - community.general
     - community.docker
 
   vars_files:
