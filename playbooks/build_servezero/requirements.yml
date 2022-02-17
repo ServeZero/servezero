@@ -3,6 +3,6 @@ roles:
   - geerlingguy.ntp
   
 collections:
+  - ansible.posix
   - community.general
   - community.docker
-  - ansible.posix

@@ -14,11 +14,6 @@
     localectl set-locale LANG=ja_JP.UTF-8
     localectl set-keymap jp106
 
-# - name: Add Docker required package
-#   dnf:
-#     name:
-#       - python36
-
 - name: Add Docker repository
   get_url:
     url: https://download.docker.com/linux/centos/docker-ce.repo
@@ -41,10 +36,6 @@
   shell:
     cmd: 'pip3 install docker-compose'
 
-- name: Add module for Docker compose
-  shell:
-    #cmd: 'python3 -m pip install requests'
-    cmd: 'pip3 install requests'
 #
 # ServeZeroシステム配置ディレクトリ作成
 #
@@ -118,6 +109,8 @@
 - name: Create a network
   docker_network:
     name: local-network
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
 
 #
 # MariaDBコンテナ作成
@@ -145,6 +138,8 @@
       path: './container/db/build'
       pull: yes
     source: build
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
 
 - name: Create MariaDB container
   docker_container:
@@ -167,7 +162,9 @@
     volumes:
       - '{{ servezero_path }}/{{ servezero_share_volume }}/mariadb/data:/var/lib/mysql'
       - '{{ servezero_path }}/{{ servezero_share_volume }}/mariadb/custom.cnf:/etc/mysql/conf.d/custom.cnf:ro'
-  
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
 #
 # PHPコンテナ作成
 #
@@ -194,6 +191,8 @@
       path: './container/php/build'
       pull: yes
     source: build
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
 
 - name: Create php container
   docker_container:
@@ -212,6 +211,8 @@
       - '{{ servezero_path }}/{{ servezero_share_volume }}/vhost:/var/www/vhost:rw'
       - '{{ servezero_path }}/{{ servezero_share_volume }}/php/php.ini:/usr/local/etc/php/conf.d/my.ini:ro'
       - '{{ servezero_path }}/{{ servezero_share_volume }}/php/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro'
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
 
 #
 # Nginxコンテナ作成
@@ -239,6 +240,8 @@
       path: './container/nginx/build'
       pull: yes
     source: build
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
 
 - name: Create nginx container
   docker_container:
@@ -264,7 +267,9 @@
       - '{{ servezero_path }}/{{ servezero_share_volume }}/nginx/ssl:/etc/nginx/ssl:rw'
       - '{{ servezero_path }}/{{ servezero_share_volume }}/nginx/sites-available:/etc/nginx/sites-available:ro'
       - '{{ servezero_path }}/{{ servezero_share_volume }}/nginx/error:/var/www/error:ro'
-
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    
 #
 # ファイアウォールの設定
 #

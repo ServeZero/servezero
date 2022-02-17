@@ -30,17 +30,21 @@ fi
 
 # Check os version
 declare OS="unsupported os"
-declare DIST_NAME="not ditected"
+declare DIST_NAME=""
 
 if [ "$(uname)" == 'Darwin' ]; then
     OS='Mac'
-    uname -a
-    exit 1
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     RELEASE_FILE=/etc/os-release
     if grep '^NAME="CentOS' ${RELEASE_FILE} >/dev/null; then
         OS="CentOS"
         DIST_NAME="CentOS"
+
+        OS_VERSION=$(. /etc/os-release; echo $VERSION_ID)
+        if [ $((OS_VERSION)) -lt 8 ]; then
+            echo "Unsupported os version. The minimum required version is 8."
+            exit 1
+        fi
     elif grep '^NAME="Rocky Linux' ${RELEASE_FILE} >/dev/null; then
         OS="CentOS"
         DIST_NAME="Rocky Linux"
@@ -49,22 +53,15 @@ elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
         DIST_NAME="Alma Linux"
     elif grep '^NAME="Amazon' ${RELEASE_FILE} >/dev/null; then
         OS="Amazon Linux"
-        DIST_NAME="Amazon Linux"
-        uname -a
-        exit 1
     elif grep '^NAME="Ubuntu' ${RELEASE_FILE} >/dev/null; then
         OS="Ubuntu"
-        DIST_NAME="Ubuntu"
-    else
-        echo "Your platform is not supported."
-        uname -a
-        exit 1
     fi
 elif [ "$(expr substr $(uname -s) 1 6)" == 'CYGWIN' ]; then
     OS='Cygwin'
-    uname -a
-    exit 1
-else
+fi
+
+# Exit if unsupported os
+if [ "${DIST_NAME}" == '' ]; then
     echo "Your platform is not supported."
     uname -a
     exit 1
