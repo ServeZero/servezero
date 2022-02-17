@@ -32,9 +32,15 @@
     state: started
     enabled: true
 
+- name: Check newer Python exists
+  stat:
+    path: {{ python_path }}
+  register: python_exist
+
 - name: Setup Python version
   shell:
     cmd: alternatives --set python3 {{ python_path }}
+  when: python_exist.stat.exists
 
 - name: Install Docker compose
   shell:
