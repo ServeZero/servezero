@@ -18,7 +18,6 @@ readonly GITHUB_USER="ServeZero"
 readonly GITHUB_REPO="servezero"
 readonly REPO_DIR=/usr/local/${APP_NAME}/repo
 readonly PLAYBOOK="build_servezero"
-readonly ANSIBLE_BIN=/root/.local/bin
 
 # check root user
 readonly USERID=`id | sed 's/uid=\([0-9]*\)(.*/\1/'`
@@ -92,11 +91,8 @@ declare INSTALL_PACKAGE_CMD=""
 if [ $OS == 'CentOS' ]; then
     INSTALL_PACKAGE_CMD="yum -y install"
     
-#    # Repository update for latest ansible
-#    yum -y install epel-release
-    # Install Python3.9 and Install latest ansible
-    yum install -y python39
-    pip3.9 install --user ansible
+    # Repository update for latest ansible
+    yum -y install epel-release
 elif [ $OS == 'Ubuntu' ]; then
     if ! type -P ansible >/dev/null ; then
         INSTALL_PACKAGE_CMD="apt -y install"
@@ -111,7 +107,7 @@ fi
 
 # Install ansible command if not exists
 if [ "$INSTALL_PACKAGE_CMD" != '' ]; then
-#    $INSTALL_PACKAGE_CMD ansible
+    $INSTALL_PACKAGE_CMD ansible
     $INSTALL_PACKAGE_CMD git
 fi
 
@@ -160,5 +156,5 @@ mkdir -p ${REPO_DIR}
 mv $work_dir/${GITHUB_REPO} ${REPO_DIR}
 cd ${REPO_DIR}/${GITHUB_REPO}/playbooks/${PLAYBOOK}
 rm -rf $work_dir
-${ANSIBLE_BIN}/ansible-galaxy install --role-file=requirements.yml --roles-path=/etc/ansible/roles --force
-${ANSIBLE_BIN}/ansible-playbook -i localhost, main.yml
+ansible-galaxy install --role-file=requirements.yml --roles-path=/etc/ansible/roles --force
+ansible-playbook -i localhost, main.yml
