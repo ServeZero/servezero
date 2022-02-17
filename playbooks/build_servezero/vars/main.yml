@@ -10,7 +10,7 @@ ssh_default_port: 22
 #
 # Ansible configuration
 #
-ansible_python_interpreter: /usr/bin/python3
+#ansible_python_interpreter: /usr/bin/python3
 
 #
 # Docker container configuration
