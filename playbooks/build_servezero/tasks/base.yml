@@ -43,8 +43,8 @@
 
 - name: Add module for Docker compose
   shell:
-    cmd: 'python3 -m pip install requests'
-
+    #cmd: 'python3 -m pip install requests'
+    cmd: 'pip3 install requests'
 #
 # ServeZeroシステム配置ディレクトリ作成
 #
