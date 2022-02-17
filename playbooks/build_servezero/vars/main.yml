@@ -8,6 +8,11 @@ ntp_timezone: Asia/Tokyo
 ssh_default_port: 22
 
 #
+# Ansible configuration
+#
+ansible_python_interpreter: /usr/bin/python3
+
+#
 # Docker container configuration
 #
 docker_container_timezone: Asia/Tokyo

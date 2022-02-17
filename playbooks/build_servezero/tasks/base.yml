@@ -112,7 +112,7 @@
 # ネットワーク作成
 #
 - name: Create a network
-  community.docker.docker_network:
+  docker_network:
     name: local-network
 
 #
