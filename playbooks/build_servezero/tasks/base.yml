@@ -34,7 +34,7 @@
 
 - name: Check newer Python exists
   stat:
-    path: {{ python_path }}
+    path: '{{ python_path }}'
   register: python_exist
 
 - name: Setup Python version
