@@ -32,9 +32,13 @@
     state: started
     enabled: true
 
+- name: Setup Python version
+  shell:
+    cmd: alternatives --set python3 {{ python_path }}
+
 - name: Install Docker compose
   shell:
-    cmd: 'pip3 install docker-compose'
+    cmd: pip3 install docker-compose
 
 #
 # ServeZeroシステム配置ディレクトリ作成

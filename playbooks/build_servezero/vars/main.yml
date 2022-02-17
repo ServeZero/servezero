@@ -7,6 +7,9 @@ ntp_timezone: Asia/Tokyo
 # SSH configuration
 ssh_default_port: 22
 
+# python configuration
+python_path: /usr/bin/python3.8
+
 #
 # Docker container configuration
 #
