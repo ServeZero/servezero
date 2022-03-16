@@ -8,6 +8,10 @@
 - サーバリソースを最大限に生かした作り(→運用費用の低減)
 - サーバコンテナ技術で安定したWebアプリケーションの運用と技術の変化への機敏な対応(Dockerコンテナを使用)
 
+## アーキテクチャー
+
+![system_architecture](https://user-images.githubusercontent.com/4754964/158538309-5b7a62c7-d88a-4ad4-baae-468605224169.png)
+
 ## ドキュメント
 
 https://servezero.github.io/
